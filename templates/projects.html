@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Projects — {{ profile.name }}{% endblock %}
+{% block content %}
+
+<section style="border-top:none; padding-bottom:40px;">
+  <div class="wrap">
+    <span class="section-label">index</span>
+    <h1 style="font-size:clamp(2rem,4vw,3rem);">All projects</h1>
+    <p style="max-width:60ch;">A record of things I've designed, built, and shipped.</p>
+  </div>
+</section>
+
+<section style="border-top:none; padding-top:0;">
+  <div class="wrap">
+    {% if projects %}
+    <div class="project-grid">
+      {% for project in projects %}
+      <a class="project-card" href="{{ url_for('project_detail', slug=project.slug) }}">
+        <div class="project-thumb">
+          {% if project.image %}
+            <img src="{{ url_for('static', filename='uploads/projects/' + project.image) }}" alt="{{ project.title }}">
+          {% else %}
+            <span class="placeholder">no preview</span>
+          {% endif %}
+        </div>
+        <div class="project-body">
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.summary }}</p>
+          {% if project.tech_list() %}
+          <div class="tag-row">
+            {% for tech in project.tech_list()[:4] %}<span class="tag">--{{ tech }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">No projects yet — add your first one from the admin panel.</div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

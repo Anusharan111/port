@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="hero" id="home" style="border-top:none;">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="hero-eyebrow">available for new projects</div>
+      <h1>Hi, I'm <span class="accent">{{ profile.name }}</span> —<br>{{ profile.title }}</h1>
+      <p class="hero-tagline">{{ profile.tagline }}</p>
+      <div class="hero-cta">
+        <a href="{{ url_for('projects') }}" class="btn btn-primary">View projects →</a>
+        <a href="{{ url_for('contact') }}" class="btn btn-ghost">Get in touch</a>
+        {% if profile.resume_url %}<a href="{{ profile.resume_url }}" class="btn btn-ghost" target="_blank" rel="noopener">Resume ↓</a>{% endif %}
+      </div>
+    </div>
+    <div class="hero-photo" data-tag="fig. 01 — portrait">
+      {% if profile.profile_image %}
+        <img src="{{ url_for('static', filename='uploads/profile/' + profile.profile_image) }}" alt="{{ profile.name }}">
+      {% else %}
+        <div class="placeholder">Add a profile photo<br>from the admin panel</div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<section id="featured-work">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-label">selected work</span>
+        <h2>Featured projects</h2>
+      </div>
+      <p class="section-desc">A few things I've built recently. <a href="{{ url_for('projects') }}" style="color:var(--amber)">See all →</a></p>
+    </div>
+
+    {% if projects %}
+    <div class="project-grid">
+      {% for project in projects %}
+      <a class="project-card" href="{{ url_for('project_detail', slug=project.slug) }}">
+        <div class="project-thumb">
+          {% if project.image %}
+            <img src="{{ url_for('static', filename='uploads/projects/' + project.image) }}" alt="{{ project.title }}">
+          {% else %}
+            <span class="placeholder">no preview</span>
+          {% endif %}
+        </div>
+        <div class="project-body">
+          <h3>{{ project.title }}</h3>
+          <p>{{ project.summary }}</p>
+          {% if project.tech_list() %}
+          <div class="tag-row">
+            {% for tech in project.tech_list()[:4] %}<span class="tag">--{{ tech }}</span>{% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">No featured projects yet — mark a project as "featured" in the admin panel to show it here.</div>
+    {% endif %}
+  </div>
+</section>
+
+{% if skills %}
+<section id="skills">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <span class="section-label">toolkit</span>
+        <h2>Skills &amp; stack</h2>
+      </div>
+    </div>
+    <div class="skills-wrap">
+      {% set ns = namespace(cat="") %}
+      {% for skill in skills %}
+        {% if skill.category != ns.cat %}
+          {% if not loop.first %}</div>{% endif %}
+          <div class="skill-cat-block">
+          <div class="skill-cat">{{ skill.category }}</div>
+          {% set ns.cat = skill.category %}
+        {% endif %}
+        <div class="skill-item">
+          <div class="skill-item-top"><span>{{ skill.name }}</span><span>{{ skill.proficiency }}%</span></div>
+          <div class="skill-bar"><div class="skill-bar-fill" style="width:{{ skill.proficiency }}%"></div></div>
+        </div>
+        {% if loop.last %}</div>{% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section id="cta">
+  <div class="wrap" style="text-align:center;">
+    <span class="section-label">let's talk</span>
+    <h2>Have a project in mind?</h2>
+    <p style="max-width:50ch;margin:0 auto 28px;">{{ profile.tagline }}</p>
+    <a href="{{ url_for('contact') }}" class="btn btn-primary">Start a conversation →</a>
+  </div>
+</section>
+
+{% endblock %}

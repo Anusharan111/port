@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}{{ profile.name if profile else 'Portfolio' }}{% endblock %}</title>
+<meta name="description" content="{{ profile.tagline if profile else 'Portfolio' }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span class="brand-name">{{ profile.name if profile else 'portfolio' }}</span>
+    </a>
+    <nav class="site-nav">
+      <a href="{{ url_for('index') }}#home">home</a>
+      <a href="{{ url_for('projects') }}">projects</a>
+      <a href="{{ url_for('about') }}">about</a>
+      <a href="{{ url_for('contact') }}">contact</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+  </div>
+</header>
+
+<main>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-wrap wrap">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% block content %}{% endblock %}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <span>&copy; {{ now_year }} {{ profile.name if profile else '' }}. All rights reserved.</span>
+    <div class="footer-links">
+      {% if profile and profile.github_url %}<a href="{{ profile.github_url }}" target="_blank" rel="noopener">github</a>{% endif %}
+      {% if profile and profile.linkedin_url %}<a href="{{ profile.linkedin_url }}" target="_blank" rel="noopener">linkedin</a>{% endif %}
+      {% if profile and profile.twitter_url %}<a href="{{ profile.twitter_url }}" target="_blank" rel="noopener">twitter</a>{% endif %}
+      <a href="{{ url_for('admin_login') }}" class="admin-dot" title="admin" aria-label="Admin login">&middot;</a>
+    </div>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,58 @@
+{% extends "admin/_layout.html" %}
+{% set active = "skills" %}
+{% block title %}Skills — Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-header"><h1>Skills</h1></div>
+
+<div class="admin-card">
+  <h2 style="font-size:1.05rem; margin-bottom:18px;">Add a skill</h2>
+  <form method="POST">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Skill name</label>
+        <input type="text" id="name" name="name" placeholder="Python" required>
+      </div>
+      <div class="form-group">
+        <label for="category">Category</label>
+        <input type="text" id="category" name="category" placeholder="Backend">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="proficiency">Proficiency (0–100)</label>
+        <input type="number" id="proficiency" name="proficiency" min="0" max="100" value="80">
+      </div>
+      <div class="form-group">
+        <label for="sort_order">Sort order</label>
+        <input type="number" id="sort_order" name="sort_order" value="0">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Add skill</button>
+  </form>
+</div>
+
+{% if skills %}
+<table class="admin-table">
+  <thead><tr><th>Name</th><th>Category</th><th>Proficiency</th><th>Order</th><th></th></tr></thead>
+  <tbody>
+    {% for s in skills %}
+    <tr>
+      <td>{{ s.name }}</td>
+      <td>{{ s.category }}</td>
+      <td>{{ s.proficiency }}%</td>
+      <td>{{ s.sort_order }}</td>
+      <td class="row-actions">
+        <form method="POST" action="{{ url_for('admin_skill_delete', skill_id=s.id) }}" onsubmit="return confirm('Remove this skill?');">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">No skills added yet.</div>
+{% endif %}
+
+{% endblock %}

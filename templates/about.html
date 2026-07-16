@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}About — {{ profile.name }}{% endblock %}
+{% block content %}
+
+<section style="border-top:none;">
+  <div class="wrap about-grid">
+    <div>
+      <div class="about-photo">
+        {% if profile.profile_image %}
+          <img src="{{ url_for('static', filename='uploads/profile/' + profile.profile_image) }}" alt="{{ profile.name }}">
+        {% endif %}
+      </div>
+      <div class="meta-list">
+        {% if profile.location %}<div><span>location</span><span>{{ profile.location }}</span></div>{% endif %}
+        <div><span>email</span><span>{{ profile.email }}</span></div>
+        {% if profile.phone %}<div><span>phone</span><span>{{ profile.phone }}</span></div>{% endif %}
+      </div>
+    </div>
+    <div>
+      <span class="section-label">about</span>
+      <h1 style="font-size:clamp(2rem,4vw,2.8rem);">{{ profile.title }}</h1>
+      <p style="color:var(--text); font-size:1.05rem; white-space:pre-line;">{{ profile.bio }}</p>
+
+      {% if skills %}
+      <div style="margin-top:40px;">
+        <h2 style="font-size:1.2rem;">Skills &amp; stack</h2>
+        <div class="skills-wrap" style="grid-template-columns:1fr 1fr;">
+          {% set ns = namespace(cat="") %}
+          {% for skill in skills %}
+            {% if skill.category != ns.cat %}
+              {% if not loop.first %}</div>{% endif %}
+              <div class="skill-cat-block">
+              <div class="skill-cat">{{ skill.category }}</div>
+              {% set ns.cat = skill.category %}
+            {% endif %}
+            <div class="skill-item">
+              <div class="skill-item-top"><span>{{ skill.name }}</span><span>{{ skill.proficiency }}%</span></div>
+              <div class="skill-bar"><div class="skill-bar-fill" style="width:{{ skill.proficiency }}%"></div></div>
+            </div>
+            {% if loop.last %}</div>{% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div style="margin-top:40px;">
+        <a href="{{ url_for('contact') }}" class="btn btn-primary">Get in touch →</a>
+        {% if profile.resume_url %}<a href="{{ profile.resume_url }}" target="_blank" rel="noopener" class="btn btn-ghost">Download resume ↓</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "admin/_layout.html" %}
+{% set active = "profile" %}
+{% block title %}Profile — Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-header"><h1>Profile</h1></div>
+
+<div class="admin-card">
+  <form method="POST" enctype="multipart/form-data">
+    {% if profile.profile_image %}
+      <img class="current-image" src="{{ url_for('static', filename='uploads/profile/' + profile.profile_image) }}" alt="Current photo">
+    {% endif %}
+    <div class="form-group">
+      <label for="profile_image">Profile photo</label>
+      <input type="file" id="profile_image" name="profile_image" accept="image/*">
+      <div class="form-hint">PNG, JPG, GIF, WEBP or SVG. Leave empty to keep the current photo.</div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="name">Full name</label>
+        <input type="text" id="name" name="name" value="{{ profile.name }}" required>
+      </div>
+      <div class="form-group">
+        <label for="title">Title / role</label>
+        <input type="text" id="title" name="title" value="{{ profile.title }}" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tagline">Tagline (shown under your name on the homepage)</label>
+      <input type="text" id="tagline" name="tagline" value="{{ profile.tagline }}">
+    </div>
+
+    <div class="form-group">
+      <label for="bio">Bio</label>
+      <textarea id="bio" name="bio" style="min-height:160px;">{{ profile.bio }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ profile.email }}" required>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone</label>
+        <input type="text" id="phone" name="phone" value="{{ profile.phone }}">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" name="location" value="{{ profile.location }}">
+      </div>
+      <div class="form-group">
+        <label for="resume_url">Resume URL</label>
+        <input type="text" id="resume_url" name="resume_url" value="{{ profile.resume_url }}" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="github_url">GitHub URL</label>
+        <input type="text" id="github_url" name="github_url" value="{{ profile.github_url }}" placeholder="https://github.com/...">
+      </div>
+      <div class="form-group">
+        <label for="linkedin_url">LinkedIn URL</label>
+        <input type="text" id="linkedin_url" name="linkedin_url" value="{{ profile.linkedin_url }}" placeholder="https://linkedin.com/in/...">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="twitter_url">Twitter / X URL</label>
+      <input type="text" id="twitter_url" name="twitter_url" value="{{ profile.twitter_url }}" placeholder="https://x.com/...">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save changes</button>
+  </form>
+</div>
+
+{% endblock %}

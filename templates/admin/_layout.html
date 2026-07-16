@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block body_class %}admin{% endblock %}
+{% block content %}
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <a href="{{ url_for('admin_dashboard') }}" class="{{ 'active' if active == 'dashboard' }}">◧ Dashboard</a>
+    <a href="{{ url_for('admin_profile') }}" class="{{ 'active' if active == 'profile' }}">◧ Profile</a>
+    <a href="{{ url_for('admin_projects') }}" class="{{ 'active' if active == 'projects' }}">◧ Projects</a>
+    <a href="{{ url_for('admin_skills') }}" class="{{ 'active' if active == 'skills' }}">◧ Skills</a>
+    <a href="{{ url_for('admin_messages') }}" class="{{ 'active' if active == 'messages' }}">◧ Messages</a>
+    <a href="{{ url_for('admin_account') }}" class="{{ 'active' if active == 'account' }}">◧ Account</a>
+    <a href="{{ url_for('index') }}" target="_blank">↗ View site</a>
+    <a href="{{ url_for('admin_logout') }}">⏻ Log out</a>
+  </aside>
+  <div class="admin-main">
+    {% block admin_content %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

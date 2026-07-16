@@ -1,0 +1,37 @@
+{% extends "admin/_layout.html" %}
+{% set active = "messages" %}
+{% block title %}Messages — Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-header"><h1>Messages</h1></div>
+
+{% if messages %}
+<table class="admin-table">
+  <thead><tr><th>From</th><th>Subject</th><th>Message</th><th>Received</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+    {% for m in messages %}
+    <tr>
+      <td><strong>{{ m.name }}</strong><br><span class="form-hint"><a href="mailto:{{ m.email }}">{{ m.email }}</a></span></td>
+      <td>{{ m.subject or '—' }}</td>
+      <td style="max-width:320px;">{{ m.body }}</td>
+      <td>{{ m.created_at.strftime('%b %d, %Y %H:%M') }}</td>
+      <td>{% if m.is_read %}<span class="badge badge-gray">read</span>{% else %}<span class="badge badge-amber">new</span>{% endif %}</td>
+      <td class="row-actions">
+        {% if not m.is_read %}
+        <form method="POST" action="{{ url_for('admin_message_read', message_id=m.id) }}">
+          <button type="submit" class="btn btn-ghost btn-sm">Mark read</button>
+        </form>
+        {% endif %}
+        <form method="POST" action="{{ url_for('admin_message_delete', message_id=m.id) }}" onsubmit="return confirm('Delete this message?');">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">No messages yet. When someone submits your contact form, it'll show up here.</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Contact — {{ profile.name }}{% endblock %}
+{% block content %}
+
+<section style="border-top:none;">
+  <div class="wrap contact-grid">
+    <div class="contact-info">
+      <span class="section-label">contact</span>
+      <h1 style="font-size:clamp(2rem,4vw,2.8rem);">Let's build something.</h1>
+      <p style="margin-bottom:32px;">Have a question or a project brief? Send a message and I'll reply as soon as I can.</p>
+
+      <div>
+        <div class="label">email</div>
+        <div class="value"><a href="mailto:{{ profile.email }}">{{ profile.email }}</a></div>
+      </div>
+      {% if profile.phone %}
+      <div>
+        <div class="label">phone</div>
+        <div class="value">{{ profile.phone }}</div>
+      </div>
+      {% endif %}
+      {% if profile.location %}
+      <div>
+        <div class="label">location</div>
+        <div class="value">{{ profile.location }}</div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div>
+      <form method="POST" action="{{ url_for('contact') }}">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject">
+        </div>
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends "admin/_layout.html" %}
+{% set active = "projects" %}
+{% block title %}{{ 'Edit project' if project else 'New project' }} — Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-header">
+  <h1>{{ 'Edit project' if project else 'New project' }}</h1>
+  <a href="{{ url_for('admin_projects') }}" class="btn btn-ghost">← Back to projects</a>
+</div>
+
+<div class="admin-card">
+  <form method="POST" enctype="multipart/form-data">
+    {% if project and project.image %}
+      <img class="current-image" src="{{ url_for('static', filename='uploads/projects/' + project.image) }}" alt="Current image">
+    {% endif %}
+    <div class="form-group">
+      <label for="image">Project image</label>
+      <input type="file" id="image" name="image" accept="image/*">
+      <div class="form-hint">Recommended size ~1200x750. Leave empty to keep the current image.</div>
+    </div>
+
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" value="{{ project.title if project else '' }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="summary">Short summary (shown on cards, ~1 sentence)</label>
+      <input type="text" id="summary" name="summary" value="{{ project.summary if project else '' }}" maxlength="300">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Full description</label>
+      <textarea id="description" name="description" style="min-height:180px;">{{ project.description if project else '' }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="tech_stack">Tech stack (comma separated)</label>
+      <input type="text" id="tech_stack" name="tech_stack" value="{{ project.tech_stack if project else '' }}" placeholder="flask, react, postgres">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="github_link">GitHub link</label>
+        <input type="text" id="github_link" name="github_link" value="{{ project.github_link if project else '' }}" placeholder="https://github.com/...">
+      </div>
+      <div class="form-group">
+        <label for="live_link">Live demo link</label>
+        <input type="text" id="live_link" name="live_link" value="{{ project.live_link if project else '' }}" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="sort_order">Sort order (lower shows first)</label>
+        <input type="number" id="sort_order" name="sort_order" value="{{ project.sort_order if project else 0 }}">
+      </div>
+      <div class="form-group">
+        <label>Featured</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="featured" name="featured" {% if project and project.featured %}checked{% endif %}>
+          <label for="featured" style="margin:0;">Show on homepage</label>
+        </div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ 'Save changes' if project else 'Create project' }}</button>
+  </form>
+</div>
+
+{% endblock %}

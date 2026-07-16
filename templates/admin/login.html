@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Admin login{% endblock %}
+{% block body_class %}admin{% endblock %}
+{% block content %}
+
+<div class="login-shell">
+  <div class="login-card">
+    <span class="section-label">restricted</span>
+    <h1>Admin login</h1>
+    <p class="form-hint">Sign in to manage your portfolio content.</p>
+    <form method="POST" action="{{ url_for('admin_login') }}">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Log in →</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

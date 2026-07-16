@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ project.title }} — {{ profile.name }}{% endblock %}
+{% block content %}
+
+<section style="border-top:none; padding-bottom:0;">
+  <div class="wrap">
+    <a href="{{ url_for('projects') }}" style="font-family:var(--font-mono); font-size:.85rem; color:var(--text-dim);">← back to projects</a>
+    <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;">
+      <div>
+        <span class="section-label">case study</span>
+        <h1 style="font-size:clamp(2rem,4vw,3rem); margin-bottom:.2em;">{{ project.title }}</h1>
+        <p style="max-width:60ch;">{{ project.summary }}</p>
+      </div>
+      <div class="project-links">
+        {% if project.github_link %}<a href="{{ project.github_link }}" target="_blank" rel="noopener" class="btn btn-ghost">Source →</a>{% endif %}
+        {% if project.live_link %}<a href="{{ project.live_link }}" target="_blank" rel="noopener" class="btn btn-primary">Live demo →</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="border-top:none;">
+  <div class="wrap">
+    <div class="project-thumb" style="border-radius:var(--radius); border:1px solid var(--line); margin-bottom:40px; aspect-ratio:16/8;">
+      {% if project.image %}
+        <img src="{{ url_for('static', filename='uploads/projects/' + project.image) }}" alt="{{ project.title }}">
+      {% else %}
+        <span class="placeholder">no preview image</span>
+      {% endif %}
+    </div>
+
+    <div class="about-grid" style="grid-template-columns: 1fr .5fr;">
+      <div>
+        <h2 style="font-size:1.3rem;">Overview</h2>
+        <p style="color:var(--text); white-space:pre-line;">{{ project.description }}</p>
+      </div>
+      <div>
+        <h2 style="font-size:1.3rem;">Stack</h2>
+        <div class="tag-row">
+          {% for tech in project.tech_list() %}<span class="tag">--{{ tech }}</span>{% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

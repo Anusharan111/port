@@ -1,0 +1,38 @@
+{% extends "admin/_layout.html" %}
+{% set active = "projects" %}
+{% block title %}Projects — Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-header">
+  <h1>Projects</h1>
+  <a href="{{ url_for('admin_project_new') }}" class="btn btn-primary">+ New project</a>
+</div>
+
+{% if projects %}
+<table class="admin-table">
+  <thead><tr><th>Title</th><th>Stack</th><th>Featured</th><th>Order</th><th></th></tr></thead>
+  <tbody>
+    {% for p in projects %}
+    <tr>
+      <td>
+        <strong>{{ p.title }}</strong><br>
+        <span class="form-hint"><a href="{{ url_for('project_detail', slug=p.slug) }}" target="_blank">/projects/{{ p.slug }}</a></span>
+      </td>
+      <td>{{ p.tech_stack or '—' }}</td>
+      <td>{% if p.featured %}<span class="badge badge-amber">featured</span>{% else %}<span class="badge badge-gray">no</span>{% endif %}</td>
+      <td>{{ p.sort_order }}</td>
+      <td class="row-actions">
+        <a href="{{ url_for('admin_project_edit', project_id=p.id) }}" class="btn btn-ghost btn-sm">Edit</a>
+        <form method="POST" action="{{ url_for('admin_project_delete', project_id=p.id) }}" onsubmit="return confirm('Delete this project? This cannot be undone.');">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty-state">No projects yet. Click "New project" to add your first one.</div>
+{% endif %}
+
+{% endblock %}
